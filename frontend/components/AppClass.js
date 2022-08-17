@@ -1,21 +1,31 @@
+import axios from 'axios'
 import React from 'react'
-
+//
 // Suggested initial states
-const initialMessage = ''
-const initialEmail = ''
-const initialSteps = 0
-const initialIndex = 4 // the index the "B" is at
+const initialMessage = '';
+const initialEmail = '';
+const initialSteps = 0;
+const initialIndex = 4; // the index the "B" is at
+const URL = 'http://localhost:9000/api/result';
 
-const initialState = {
-  message: initialMessage,
-  email: initialEmail,
-  index: initialIndex,
-  steps: initialSteps,
-}
+// const initialState = {
+//   message: initialMessage,
+//   email: initialEmail,
+//   index: initialIndex,
+//   steps: initialSteps,
+// }
+
 
 export default class AppClass extends React.Component {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
-  // You can delete them and build your own logic from scratch.
+  // You can delete them and build your own logic from scratch
+  state = {
+    message: initialMessage,
+    email: initialEmail,
+    index: initialIndex,
+    steps: initialSteps,
+  };
+
 
   getXY = () => {
     // It it not necessary to have a state to track the coordinates.
