@@ -8,17 +8,10 @@ const initialSteps = 0;
 const initialIndex = 4; // the index the "B" is at
 const URL = 'http://localhost:9000/api/result';
 
-// const initialState = {
-//   message: initialMessage,
-//   email: initialEmail,
-//   index: initialIndex,
-//   steps: initialSteps,
-// }
 
 
 export default class AppClass extends React.Component {
-  // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
-  // You can delete them and build your own logic from scratch
+  
   state = {
     message: initialMessage,
     email: initialEmail,
@@ -54,12 +47,93 @@ export default class AppClass extends React.Component {
 
   reset = () => {
     // Use this helper to reset all states to their initial values.
+    this.setState({
+      message: initialMessage,
+      email: initialEmail,
+      index: initialIndex,
+      steps: initialSteps,
+    })
+    console.log('RESET!')
   }
 
   getNextIndex = (direction) => {
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
+    //console.log(`getNextIndex was successfully called with the direction ${direction}`)
+    let newIndex = null
+    if (direction === 'up') {
+      console.log(`Attempting UP. currentIndex: ${this.state.index}.`)
+      if (this.state.index > 2) {
+        newIndex = this.state.index - 3
+        this.setState({
+          index: newIndex,
+          steps: this.state.steps + 1
+        })
+        console.log(`UP SUCCESS. newIndex: ${newIndex} steps: ${this.state.steps}`)
+      }
+      else {
+        console.log('UP FAILED')
+        this.setState({
+          message: `You can't go up`
+        })
+      }
+    }
+    
+    if (direction === 'down') {
+      console.log(`Attempting DOWN. current index: ${this.state.index}.`)
+      if (this.state.index < 6) {
+        newIndex = this.state.index + 3
+        this.setState({
+          index: newIndex, 
+          steps: this.state.steps + 1
+        })
+        console.log(`DOWN SUCCESS. newIndex: ${newIndex} steps: ${this.state.steps}`)
+      }
+      else {
+        console.log('DOWN FAILED')
+        this.setState({
+          message: `You can't go down`
+        })
+      }
+    }
+    
+    if (direction === 'left') {
+      console.log(`Attempting LEFT. current index: ${this.state.index}.`)
+      if (this.state.index === 0 || this.state.index === 3 || this.state.index === 6) {
+        console.log('LEFT FAILED')
+        this.setState({
+          message: `You can't go left`
+        })
+      }
+      else {
+        newIndex = this.state.index - 1
+        this.setState({
+          index: newIndex,
+          steps: this.state.steps + 1
+
+        })
+        console.log(`LEFT SUCCESS. newIndex: ${newIndex} steps: ${this.state.steps}`)
+      }
+    }
+    
+    if (direction === 'right') {
+      console.log(`Attempting RIGHT. current index: ${this.state.index}.`)
+      if (this.state.index === 2 || this.state.index === 5 || this.state.index === 8) {
+        console.log('RIGHT FAILED')
+        this.setState({
+          message: `You can't go right`
+        })
+      }
+      else {
+        newIndex = this.state.index + 1
+        this.setState({
+          index: newIndex,
+          steps: this.state.steps + 1
+        })
+        console.log(`RIGHT SUCCESS. newIndex ${newIndex} steps: ${this.state.steps}`)
+      }
+    }
   }
 
   move = (evt) => {
@@ -79,32 +153,32 @@ export default class AppClass extends React.Component {
     const { className } = this.props
     return (
       <div id="wrapper" className={className}>
-        <div className="info">
-          <h3 id="coordinates">Coordinates (2, 2)</h3>
-          <h3 id="steps">You moved 0 times</h3>
+        <div onClick={this.testState} className="info">
+          <h3 id="coordinates">Coordinates {this.getXYMessage()}</h3>
+          <h3 id="steps">You moved {this.state.steps} times</h3>
         </div>
         <div id="grid">
           {
             [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-              <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-                {idx === 4 ? 'B' : null}
+              <div key={idx} className={`square${idx === this.state.index ? ' active' : ''}`}>
+                {idx === this.state.index ? 'B' : null}
               </div>
             ))
           }
         </div>
         <div className="info">
-          <h3 id="message"></h3>
+          <h3 id="message">{this.state.message}</h3>
         </div>
         <div id="keypad">
-          <button id="left">LEFT</button>
-          <button id="up">UP</button>
-          <button id="right">RIGHT</button>
-          <button id="down">DOWN</button>
-          <button id="reset">reset</button>
+          <button onClick={this.move} id="left">LEFT</button>
+          <button onClick={this.move} id="up">UP</button>
+          <button onClick={this.move} id="right">RIGHT</button>
+          <button onClick={this.move} id="down">DOWN</button>
+          <button onClick={this.reset} id="reset">reset</button>
         </div>
         <form>
-          <input id="email" type="email" placeholder="type email"></input>
-          <input id="submit" type="submit"></input>
+          <input onChange={this.onChange} id="email" type="email" placeholder="type email"></input>
+          <input onSubmit={this.onSubmit} id="submit" type="submit"></input>
         </form>
       </div>
     )
