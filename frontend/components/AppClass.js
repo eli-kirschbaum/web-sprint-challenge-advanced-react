@@ -139,8 +139,8 @@ export default class AppClass extends React.Component {
   move = (evt) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-    //console.log(`${evt.target.id} button was clicked`)
     this.getNextIndex(evt.target.id)
+    
   }
 
   onChange = (evt) => {
@@ -158,8 +158,8 @@ export default class AppClass extends React.Component {
     console.log('you pressed submit!')
     //  `{ "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com" }`:
     const payload = {
-      x: 2,
-      y: 2,
+      x: this.getXYMessage[0],
+      y: this.getXYMessage[1],
       steps: this.state.steps,
       email: this.state.email
     }
@@ -172,6 +172,23 @@ export default class AppClass extends React.Component {
         console.log(err)
       )
   }
+
+  // testApi = () => {
+  //   const payload = {
+  //     x: 2,
+  //     y: 2,
+  //     steps: 5,
+  //     email: 'ekbaum33@gmail.com'
+  //   }
+  //   axios.put(URL, payload)
+  //     .then(resp => 
+  //       console.log(resp)
+
+  //     )
+  //     .catch(err => 
+  //       console.log(err)
+  //     )
+  // }
 
   render() {
     const { className } = this.props
