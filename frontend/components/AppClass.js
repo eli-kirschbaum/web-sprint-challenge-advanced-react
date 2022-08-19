@@ -139,14 +139,38 @@ export default class AppClass extends React.Component {
   move = (evt) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
+    //console.log(`${evt.target.id} button was clicked`)
+    this.getNextIndex(evt.target.id)
   }
 
   onChange = (evt) => {
     // You will need this to update the value of the input.
+    console.log(`change is being handled: ${evt.target.value}`)
+    
+    this.setState({
+      ...this.state,
+      email: evt.target.value
+    })
   }
 
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
+    console.log('you pressed submit!')
+    //  `{ "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com" }`:
+    const payload = {
+      x: 2,
+      y: 2,
+      steps: this.state.steps,
+      email: this.state.email
+    }
+    axios.put(URL, payload)
+      .then(resp => 
+        console.log(resp)
+
+      )
+      .catch(err => 
+        console.log(err)
+      )
   }
 
   render() {
