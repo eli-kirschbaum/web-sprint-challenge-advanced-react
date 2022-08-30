@@ -5,6 +5,7 @@ const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
+const URL = 'http://localhost:9000/api/result'
 
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
@@ -45,6 +46,10 @@ export default function AppFunctional(props) {
 
   function reset() {
     // Use this helper to reset all states to their initial values.
+    setMessage(initialMessage)
+    setEmail(initialEmail)
+    setIndex(initialIndex)
+    setSteps(initialSteps)
   }
 
   function getNextIndex(direction) {
@@ -123,6 +128,7 @@ export default function AppFunctional(props) {
   }
 
   function onSubmit(evt) {
+    evt.preventDefault()
     // Use a POST request to send a payload to the server.
     console.log('submitting something')
     console.log('you pressed submit!')
@@ -133,7 +139,8 @@ export default function AppFunctional(props) {
       steps: steps,
       email: email
     }
-    axios.put(URL, payload)
+    reset()
+    axios.post(URL, payload)
       .then(resp => 
         console.log(resp)
 

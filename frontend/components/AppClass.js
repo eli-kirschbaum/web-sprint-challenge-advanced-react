@@ -154,6 +154,7 @@ export default class AppClass extends React.Component {
   }
 
   onSubmit = (evt) => {
+    evt.preventDefault()
     // Use a POST request to send a payload to the server.
     console.log('you pressed submit!')
     //  `{ "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com" }`:
@@ -163,7 +164,8 @@ export default class AppClass extends React.Component {
       steps: this.state.steps,
       email: this.state.email
     }
-    axios.put(URL, payload)
+    this.reset()
+    axios.post(URL, payload)
       .then(resp => 
         console.log(resp)
 
@@ -171,6 +173,8 @@ export default class AppClass extends React.Component {
       .catch(err => 
         console.log(err)
       )
+
+     
   }
 
   // testApi = () => {
